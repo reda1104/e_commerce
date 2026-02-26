@@ -1,3 +1,4 @@
+import 'package:e_commerce/utils/app_router.dart';
 import 'package:e_commerce/views/pages/custom_bottom_navbar.dart';
 import 'package:e_commerce/views/pages/home_page.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const CustomBottomNavbar(),
+      onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }
 }
