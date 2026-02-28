@@ -21,6 +21,8 @@ final class ProductAddedToCart extends ProductDetailsState {
   ProductAddedToCart({required this.productId});
 }
 
+final class ProductAddingToCart extends ProductDetailsState {}
+
 final class QuantityDetailsLoaded extends ProductDetailsState {
   final int quantity;
   QuantityDetailsLoaded({required this.quantity});

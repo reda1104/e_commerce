@@ -13,10 +13,13 @@ class ProductsDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final cubit = BlocProvider.of<ProductDetailsCubit>(context);
     return BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
-      bloc: BlocProvider.of<ProductDetailsCubit>(context),
+      bloc: cubit,
       buildWhen: (previous, current) =>
-          current is! QuantityDetailsLoaded && current is! SizeSelected,
+          current is ProductDetailsLoading ||
+          current is ProductDetailsLoaded ||
+          current is ProductDetailsError,
       builder: (context, state) {
         if (state is ProductDetailsLoading) {
           return Scaffold(
@@ -120,7 +123,7 @@ class ProductsDetailsPage extends StatelessWidget {
                                     );
                                   } else if (state is ProductDetailsLoaded) {
                                     return CounterWidget(
-                                      value: state.product.quantity,
+                                      value: 1,
                                       productId: productId,
                                       cubit:
                                           BlocProvider.of<ProductDetailsCubit>(
@@ -142,7 +145,7 @@ class ProductsDetailsPage extends StatelessWidget {
                           ),
                           SizedBox(height: 4),
                           BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
-                            bloc: BlocProvider.of<ProductDetailsCubit>(context),
+                            bloc: cubit,
                             buildWhen: (previous, current) =>
                                 current is SizeSelected ||
                                 current is ProductDetailsLoaded,
@@ -155,11 +158,9 @@ class ProductsDetailsPage extends StatelessWidget {
                                           right: 8.0,
                                         ),
                                         child: InkWell(
-                                          onTap: () =>
-                                              BlocProvider.of<
-                                                    ProductDetailsCubit
-                                                  >(context)
-                                                  .selectSize(size),
+                                          onTap: () {
+                                            cubit.selectSize(size);
+                                          },
                                           child: SizedBox(
                                             height: 44,
                                             width: 44,
@@ -245,19 +246,71 @@ class ProductsDetailsPage extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              ElevatedButton.icon(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.primaryColor,
-                                ),
-                                onPressed: () {},
-                                label: Text(
-                                  "Add to cart",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                icon: Icon(
-                                  Icons.shopping_bag_outlined,
-                                  color: Colors.white,
-                                ),
+                              BlocBuilder<
+                                ProductDetailsCubit,
+                                ProductDetailsState
+                              >(
+                                bloc: cubit,
+                                buildWhen: (previous, current) =>
+                                    current is ProductAddedToCart ||
+                                    current is ProductAddingToCart,
+                                builder: (context, state) {
+                                  if (state is ProductAddingToCart) {
+                                    return ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppColors.primaryColor,
+                                      ),
+                                      onPressed: null,
+                                      child:
+                                          const CircularProgressIndicator.adaptive(
+                                            strokeWidth: 2.0,
+                                          ),
+                                    );
+                                  } else if (state is ProductAddedToCart) {
+                                    return ElevatedButton.icon(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppColors.primaryColor,
+                                      ),
+                                      onPressed: null,
+                                      label: Text(
+                                        "Added to cart",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      icon: Icon(
+                                        Icons.shopping_bag_outlined,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  }
+                                  return ElevatedButton.icon(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.primaryColor,
+                                    ),
+                                    onPressed: () {
+                                      if (cubit.selectedSize != null) {
+                                        cubit.addToCart(product.id);
+                                      } else {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "Please select a size first!",
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    label: Text(
+                                      "Add to cart",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    icon: Icon(
+                                      Icons.shopping_bag_outlined,
+                                      color: Colors.white,
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),

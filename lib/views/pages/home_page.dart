@@ -27,80 +27,73 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        final cubit = HomeCubit();
-        cubit.getHomeData();
-        return cubit;
-      },
-      child: Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 25,
-                          backgroundImage: NetworkImage(
-                            'https://tse3.mm.bing.net/th/id/OIP.xGAXVKjGAk2ITkuZTlJbKgHaLH?rs=1&pid=ImgDetMain&o=7&rm=3',
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(
+                          'https://tse3.mm.bing.net/th/id/OIP.xGAXVKjGAk2ITkuZTlJbKgHaLH?rs=1&pid=ImgDetMain&o=7&rm=3',
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Hi Sarah",
+                            style: Theme.of(context).textTheme.labelLarge,
                           ),
-                        ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Hi Sarah",
-                              style: Theme.of(context).textTheme.labelLarge,
-                            ),
-                            Text(
-                              "Lets go shopping",
-                              style: Theme.of(context).textTheme.labelSmall!
-                                  .copyWith(color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-
-                    Row(
-                      children: [
-                        IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.notifications),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 20),
-
-                TabBar(
-                  controller: _tabController,
-                  unselectedLabelColor: AppColors.grey,
-                  tabs: [
-                    Tab(child: Text("Home")),
-                    Tab(child: Text("Category")),
-                  ],
-                ),
-
-                SizedBox(height: 20),
-
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: const [HomeTabView(), CategoryTabView()],
+                          Text(
+                            "Lets go shopping",
+                            style: Theme.of(context).textTheme.labelSmall!
+                                .copyWith(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
+
+                  Row(
+                    children: [
+                      IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.notifications),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 20),
+
+              TabBar(
+                controller: _tabController,
+                unselectedLabelColor: AppColors.grey,
+                tabs: [
+                  Tab(child: Text("Home")),
+                  Tab(child: Text("Category")),
+                ],
+              ),
+
+              SizedBox(height: 20),
+
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: const [HomeTabView(), CategoryTabView()],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
