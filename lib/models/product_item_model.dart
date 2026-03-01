@@ -21,6 +21,8 @@ class ProductItemModel {
     this.averageRate = 4.5,
   });
 
+  get image => null;
+
   ProductItemModel copyWith({
     String? id,
     String? title,

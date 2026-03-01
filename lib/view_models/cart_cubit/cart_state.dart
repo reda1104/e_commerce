@@ -15,3 +15,8 @@ final class CartError extends CartState {
   final String message;
   CartError({required this.message});
 }
+
+final class QuantityDetailsLoaded extends CartState {
+  final int quantity;
+  QuantityDetailsLoaded({required this.quantity});
+}

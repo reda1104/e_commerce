@@ -24,7 +24,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
     ),
     PersistentTabConfig(
       screen: CartPage(),
-      item: ItemConfig(icon: Icon(Icons.shopping_cart), title: "Orders"),
+      item: ItemConfig(icon: Icon(Icons.shopping_cart), title: "Cart"),
     ),
     PersistentTabConfig(
       screen: FavouritePage(),
@@ -45,6 +45,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
+      stateManagement: false,
       tabs: persistentTabs,
       controller: _controller,
       navBarBuilder: (navBarConfig) => Style6BottomNavBar(
