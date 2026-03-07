@@ -49,34 +49,46 @@ class CartItemWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    BlocBuilder<CartCubit, CartState>(
-                      bloc: cubit,
-                      buildWhen: (previous, current) =>
-                          current is QuantityDetailsLoaded,
-                      builder: (context, state) {
-                        if (state is QuantityDetailsLoaded) {
-                          return CounterWidget(
-                            value: cartItem.quantity,
+                BlocBuilder<CartCubit, CartState>(
+                  bloc: cubit,
+                  buildWhen: (previous, current) =>
+                      current is QuantityDetailsLoaded &&
+                      current.productId == cartItem.product.id,
+                  builder: (context, state) {
+                    if (state is QuantityDetailsLoaded) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CounterWidget(
+                            value: state.quantity,
                             productId: cartItem.product.id,
                             cubit: cubit,
-                          );
-                        }
-                        return CounterWidget(
+                          ),
+                          Text(
+                            "\$${(state.quantity * cartItem.product.price).toStringAsFixed(1)}",
+                            style: Theme.of(context).textTheme.headlineMedium!
+                                .copyWith(fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      );
+                    }
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CounterWidget(
                           value: cartItem.quantity,
                           productId: cartItem.product.id,
                           cubit: cubit,
-                        );
-                      },
-                    ),
-                    Text(
-                      "\$${cartItem.product.price}",
-                      style: Theme.of(context).textTheme.headlineMedium!
-                          .copyWith(fontWeight: FontWeight.w600),
-                    ),
-                  ],
+                          initialValue: cartItem.quantity,
+                        ),
+                        Text(
+                          "\$${cartItem.totalPrice.toStringAsFixed(1)}",
+                          style: Theme.of(context).textTheme.headlineMedium!
+                              .copyWith(fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),

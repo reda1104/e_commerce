@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerce/utils/app_colors.dart';
 import 'package:e_commerce/view_models/cart_cubit/cart_cubit.dart';
 import 'package:e_commerce/view_models/home_cubit/home_cubit.dart';
 import 'package:e_commerce/views/pages/cart_page.dart';
@@ -17,22 +19,39 @@ class CustomBottomNavbar extends StatefulWidget {
 
 class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
   late final PersistentTabController _controller;
+  int currentIndex = 0;
   List<PersistentTabConfig> persistentTabs = [
     PersistentTabConfig(
       screen: HomePage(),
-      item: ItemConfig(icon: Icon(Icons.home), title: "Home"),
+      item: ItemConfig(
+        icon: Icon(Icons.home),
+        title: "Home",
+        activeForegroundColor: AppColors.primaryColor,
+      ),
     ),
     PersistentTabConfig(
       screen: CartPage(),
-      item: ItemConfig(icon: Icon(Icons.shopping_cart), title: "Cart"),
+      item: ItemConfig(
+        icon: Icon(Icons.shopping_cart),
+        title: "Cart",
+        activeForegroundColor: AppColors.primaryColor,
+      ),
     ),
     PersistentTabConfig(
       screen: FavouritePage(),
-      item: ItemConfig(icon: Icon(Icons.favorite), title: "Favourites"),
+      item: ItemConfig(
+        icon: Icon(Icons.favorite),
+        title: "Favourites",
+        activeForegroundColor: AppColors.primaryColor,
+      ),
     ),
     PersistentTabConfig(
       screen: ProfilePage(),
-      item: ItemConfig(icon: Icon(Icons.person), title: "Profile"),
+      item: ItemConfig(
+        icon: Icon(Icons.person),
+        title: "Profile",
+        activeForegroundColor: AppColors.primaryColor,
+      ),
     ),
   ];
   @override
@@ -44,20 +63,63 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      stateManagement: false,
-      tabs: persistentTabs,
-      controller: _controller,
-      navBarBuilder: (navBarConfig) => Style6BottomNavBar(
-        navBarConfig: navBarConfig,
-        navBarDecoration: NavBarDecoration(
-          color: const Color.fromARGB(255, 255, 255, 255),
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10)],
+    return Scaffold(
+      appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: CircleAvatar(
+            radius: 25,
+            backgroundImage: CachedNetworkImageProvider(
+              'https://tse3.mm.bing.net/th/id/OIP.xGAXVKjGAk2ITkuZTlJbKgHaLH?rs=1&pid=ImgDetMain&o=7&rm=3',
+            ),
+          ),
         ),
-        itemAnimationProperties: ItemAnimation(
-          duration: const Duration(milliseconds: 400),
-          curve: Curves.easeInOut,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Hi Sarah", style: Theme.of(context).textTheme.labelLarge),
+            Text(
+              "Lets go shopping",
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall!.copyWith(color: AppColors.grey),
+            ),
+          ],
+        ),
+
+        actions: [
+          if (currentIndex == 0) ...[
+            Row(
+              children: [
+                IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+                IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
+              ],
+            ),
+          ] else if (currentIndex == 1) ...[
+            IconButton(onPressed: () {}, icon: Icon(Icons.shopping_bag)),
+          ],
+        ],
+      ),
+      body: PersistentTabView(
+        onTabChanged: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        stateManagement: false,
+        tabs: persistentTabs,
+        controller: _controller,
+        navBarBuilder: (navBarConfig) => Style6BottomNavBar(
+          navBarConfig: navBarConfig,
+          navBarDecoration: NavBarDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10)],
+          ),
+          itemAnimationProperties: ItemAnimation(
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeInOut,
+          ),
         ),
       ),
     );

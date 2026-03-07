@@ -8,7 +8,8 @@ final class CartLoading extends CartState {}
 
 final class CartLoaded extends CartState {
   final List<AddToCartModel> cartItems;
-  CartLoaded({required this.cartItems});
+  final double subtotal;
+  CartLoaded({required this.cartItems, required this.subtotal});
 }
 
 final class CartError extends CartState {
@@ -18,5 +19,11 @@ final class CartError extends CartState {
 
 final class QuantityDetailsLoaded extends CartState {
   final int quantity;
-  QuantityDetailsLoaded({required this.quantity});
+  final String productId;
+  QuantityDetailsLoaded({required this.productId, required this.quantity});
+}
+
+final class SubtotalUpdated extends CartState {
+  final double subtotal;
+  SubtotalUpdated({required this.subtotal});
 }

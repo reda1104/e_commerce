@@ -13,6 +13,24 @@ class AddToCartModel {
     required this.size,
     required this.quantity,
   });
+
+  double get totalPrice {
+    return product.price * quantity;
+  }
+
+  AddToCartModel copyWith({
+    String? id,
+    ProductItemModel? product,
+    ProductSizes? size,
+    int? quantity,
+  }) {
+    return AddToCartModel(
+      id: id ?? this.id,
+      product: product ?? this.product,
+      size: size ?? this.size,
+      quantity: quantity ?? this.quantity,
+    );
+  }
 }
 
 List<AddToCartModel> dummyCart = [];
