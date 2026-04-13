@@ -1,5 +1,6 @@
 import 'package:e_commerce/models/add_to_cart_model.dart';
 import 'package:e_commerce/utils/app_colors.dart';
+import 'package:e_commerce/utils/app_routes.dart';
 import 'package:e_commerce/view_models/cart_cubit/cart_cubit.dart';
 import 'package:e_commerce/views/widgets/cart_item_widget.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class CartPage extends StatelessWidget {
           return SingleChildScrollView(
             child: Column(
               children: [
+                SizedBox(height: 30),
                 ListView.separated(
                   separatorBuilder: (context, index) => Divider(thickness: 1),
                   shrinkWrap: true,
@@ -100,7 +102,11 @@ class CartPage extends StatelessWidget {
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(
+                          context,
+                        ).pushNamed(AppRoutes.checkoutRoute);
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryColor,
                         foregroundColor: AppColors.white,
