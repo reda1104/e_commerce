@@ -1,13 +1,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerce/models/payment_card_model.dart';
 import 'package:e_commerce/utils/app_colors.dart';
 import 'package:e_commerce/view_models/checkout_cubit/check_out_cubit.dart';
 import 'package:e_commerce/views/widgets/checkout_headlines_item.dart';
 import 'package:e_commerce/views/widgets/empty_shipping_payment.dart';
+import 'package:e_commerce/views/widgets/payment_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CheckoutPage extends StatelessWidget {
   const CheckoutPage({super.key});
+
+  Widget _buildPaymentCardItem(PaymentCardModel? selectedCard) {
+    if (selectedCard != null) {
+      return PaymentCardWidget(paymentCard: selectedCard, OnItemTapped: () {});
+    } else {
+      return const EmptyShippingPayment(title: "Add Payment Method");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +43,7 @@ class CheckoutPage extends StatelessWidget {
                 } else if (state is CheckOutError) {
                   return Center(child: Text(state.errorMessage));
                 } else if (state is CheckOutLoaded) {
+                  final selectedPaymentCard = state.selectedCard;
                   return SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -123,9 +134,7 @@ class CheckoutPage extends StatelessWidget {
                           const SizedBox(height: 20),
                           const CheckoutHeadlinesItem(title: "Payment"),
                           const SizedBox(height: 16),
-                          const EmptyShippingPayment(
-                            title: "Add Payment Method",
-                          ),
+                          _buildPaymentCardItem(selectedPaymentCard),
                           const SizedBox(height: 20),
                           Divider(thickness: 1),
                           const SizedBox(height: 20),
