@@ -1,5 +1,5 @@
 import 'package:e_commerce/utils/app_colors.dart';
-import 'package:e_commerce/view_models/add_new_card_cubit/add_new_card_cubit.dart';
+import 'package:e_commerce/view_models/add_new_card_cubit/payment_methods_cubit.dart';
 import 'package:e_commerce/views/widgets/label_text_field_new_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +20,7 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<AddNewCardCubit>(context);
+    final cubit = BlocProvider.of<PaymentMethodsCubit>(context);
     return Scaffold(
       appBar: AppBar(title: const Text("Add New Card")),
       body: Padding(
@@ -57,7 +57,7 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
               const Spacer(),
               SizedBox(
                 width: double.infinity,
-                child: BlocConsumer<AddNewCardCubit, AddNewCardState>(
+                child: BlocConsumer<PaymentMethodsCubit, PaymentMethodsState>(
                   listenWhen: (previous, current) =>
                       current is AddNewCardError ||
                       current is AddNewCardSuccess,

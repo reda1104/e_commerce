@@ -1,21 +1,49 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/models/payment_card_model.dart';
 import 'package:e_commerce/utils/app_colors.dart';
+import 'package:e_commerce/view_models/add_new_card_cubit/payment_methods_cubit.dart';
 import 'package:e_commerce/view_models/checkout_cubit/check_out_cubit.dart';
 import 'package:e_commerce/views/widgets/checkout_headlines_item.dart';
 import 'package:e_commerce/views/widgets/empty_shipping_payment.dart';
 import 'package:e_commerce/views/widgets/payment_card_widget.dart';
+import 'package:e_commerce/views/widgets/payment_method_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CheckoutPage extends StatelessWidget {
   const CheckoutPage({super.key});
 
-  Widget _buildPaymentCardItem(PaymentCardModel? selectedCard) {
+  Widget _buildPaymentCardItem(
+    PaymentCardModel? selectedCard,
+    BuildContext context,
+  ) {
     if (selectedCard != null) {
-      return PaymentCardWidget(paymentCard: selectedCard, OnItemTapped: () {});
+      return PaymentCardWidget(
+        paymentCard: selectedCard,
+        OnItemTapped: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (_) {
+              return SizedBox(
+                width: double.infinity,
+                child: BlocProvider(
+                  create: (context) {
+                    final cubit = PaymentMethodsCubit();
+                    cubit.fetchPaymentMethods();
+                    return cubit;
+                  },
+                  child: PaymentMethodBottomSheet(),
+                ),
+              );
+            },
+          );
+        },
+      );
     } else {
-      return const EmptyShippingPayment(title: "Add Payment Method");
+      return const EmptyShippingPayment(
+        isPayment: true,
+        title: "Add Payment Method",
+      );
     }
   }
 
@@ -52,6 +80,7 @@ class CheckoutPage extends StatelessWidget {
                           CheckoutHeadlinesItem(title: "Address", onTap: () {}),
                           SizedBox(height: 16),
                           const EmptyShippingPayment(
+                            isPayment: false,
                             title: "Add Shipping Address",
                           ),
                           SizedBox(height: 16),
@@ -134,7 +163,7 @@ class CheckoutPage extends StatelessWidget {
                           const SizedBox(height: 20),
                           const CheckoutHeadlinesItem(title: "Payment"),
                           const SizedBox(height: 16),
-                          _buildPaymentCardItem(selectedPaymentCard),
+                          _buildPaymentCardItem(selectedPaymentCard, context),
                           const SizedBox(height: 20),
                           Divider(thickness: 1),
                           const SizedBox(height: 20),

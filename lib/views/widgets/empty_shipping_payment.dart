@@ -7,16 +7,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EmptyShippingPayment extends StatelessWidget {
   final String title;
-  const EmptyShippingPayment({super.key, required this.title});
+  final bool isPayment;
+  const EmptyShippingPayment({
+    super.key,
+    required this.title,
+    required this.isPayment,
+  });
 
   @override
   Widget build(BuildContext context) {
     final checkOutCubit = BlocProvider.of<CheckOutCubit>(context);
     return InkWell(
       onTap: () {
-        Navigator.of(context, rootNavigator: true)
-            .pushNamed(AppRoutes.addNewCardRoute)
-            .then((value) => checkOutCubit.getCheckOutData());
+        if (isPayment) {
+          Navigator.of(context, rootNavigator: true)
+              .pushNamed(AppRoutes.addNewCardRoute)
+              .then((value) => checkOutCubit.getCheckOutData());
+        } else {
+          Navigator.of(context, rootNavigator: true)
+              .pushNamed(AppRoutes.choseLocation)
+              .then((value) => checkOutCubit.getCheckOutData());
+        }
       },
       child: Container(
         width: double.infinity,
