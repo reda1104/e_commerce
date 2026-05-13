@@ -12,7 +12,7 @@ class CategoryModel {
     required this.id,
     required this.name,
     required this.productCount,
-    this.bgColor = AppColors.primaryColor,
+    this.bgColor = AppColors.primary,
     this.textColor = AppColors.white,
   });
 }

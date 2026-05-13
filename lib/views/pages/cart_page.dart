@@ -108,7 +108,7 @@ class CartPage extends StatelessWidget {
                         ).pushNamed(AppRoutes.checkoutRoute);
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryColor,
+                        backgroundColor: AppColors.primary,
                         foregroundColor: AppColors.white,
                       ),
                       child: const Text("Checkout"),

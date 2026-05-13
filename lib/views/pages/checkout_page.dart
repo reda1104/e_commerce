@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerce/models/location_item_model.dart';
 import 'package:e_commerce/models/payment_card_model.dart';
 import 'package:e_commerce/utils/app_colors.dart';
+import 'package:e_commerce/utils/app_routes.dart';
 import 'package:e_commerce/view_models/add_new_card_cubit/payment_methods_cubit.dart';
 import 'package:e_commerce/view_models/checkout_cubit/check_out_cubit.dart';
 import 'package:e_commerce/views/widgets/checkout_headlines_item.dart';
@@ -47,6 +49,49 @@ class CheckoutPage extends StatelessWidget {
     }
   }
 
+  Widget _buildShippingItem(
+    LocationItemModel? chosenLocation,
+    BuildContext context,
+  ) {
+    if (chosenLocation != null) {
+      return Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16.0),
+            child: CachedNetworkImage(
+              imageUrl: chosenLocation.imgUrl,
+              height: 100,
+              width: 140,
+              fit: BoxFit.cover,
+            ),
+          ),
+          SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                chosenLocation.city,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "${chosenLocation.city}, ${chosenLocation.country}",
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall!.copyWith(color: AppColors.grey),
+              ),
+            ],
+          ),
+        ],
+      );
+    } else {
+      return const EmptyShippingPayment(
+        isPayment: false,
+        title: "Add Shipping Address",
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -72,17 +117,22 @@ class CheckoutPage extends StatelessWidget {
                   return Center(child: Text(state.errorMessage));
                 } else if (state is CheckOutLoaded) {
                   final selectedPaymentCard = state.selectedCard;
+                  final chosenLocation = state.chosenLocation;
                   return SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Column(
                         children: [
-                          CheckoutHeadlinesItem(title: "Address", onTap: () {}),
-                          SizedBox(height: 16),
-                          const EmptyShippingPayment(
-                            isPayment: false,
-                            title: "Add Shipping Address",
+                          CheckoutHeadlinesItem(
+                            title: "Address",
+                            onTap: () {
+                              Navigator.of(context, rootNavigator: true)
+                                  .pushNamed(AppRoutes.choseLocation)
+                                  .then((value) => cubit.getCheckOutData());
+                            },
                           ),
+                          SizedBox(height: 16),
+                          _buildShippingItem(chosenLocation, context),
                           SizedBox(height: 16),
                           CheckoutHeadlinesItem(
                             title: "Products",
@@ -189,7 +239,7 @@ class CheckoutPage extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: () {},
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primaryColor,
+                                backgroundColor: AppColors.primary,
                                 foregroundColor: AppColors.white,
                               ),
                               child: const Text("Proceed to Buy"),

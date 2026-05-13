@@ -1,24 +1,28 @@
 import 'package:e_commerce/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class LabelTextFieldNewCard extends StatefulWidget {
+class LabelTextField extends StatefulWidget {
   final String label;
   final TextEditingController controller;
   final String hintText;
-  final IconData icon;
-  const LabelTextFieldNewCard({
+  final IconData prefixIcon;
+  final Widget? suffixIcon;
+  final bool obsecureText;
+  const LabelTextField({
     super.key,
     required this.label,
     required this.controller,
     required this.hintText,
-    required this.icon,
+    required this.prefixIcon,
+    this.suffixIcon,
+    this.obsecureText = false,
   });
 
   @override
-  State<LabelTextFieldNewCard> createState() => _LabelTextFieldNewCardState();
+  State<LabelTextField> createState() => _LabelTextFieldState();
 }
 
-class _LabelTextFieldNewCardState extends State<LabelTextFieldNewCard> {
+class _LabelTextFieldState extends State<LabelTextField> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,12 +37,15 @@ class _LabelTextFieldNewCardState extends State<LabelTextFieldNewCard> {
         const SizedBox(height: 16),
         TextFormField(
           validator: (value) => value!.isEmpty ? "Enter ${widget.label}" : null,
+          obscureText: widget.obsecureText,
           controller: widget.controller,
           decoration: InputDecoration(
             fillColor: AppColors.lightGrey,
             filled: true,
             hintText: widget.hintText,
-            prefixIcon: Icon(widget.icon),
+            suffixIcon: widget.suffixIcon,
+            suffixIconColor: AppColors.grey,
+            prefixIcon: Icon(widget.prefixIcon),
             prefixIconColor: AppColors.grey,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(12.0)),

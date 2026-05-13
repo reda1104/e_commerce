@@ -1,6 +1,6 @@
 import 'package:e_commerce/utils/app_colors.dart';
 import 'package:e_commerce/view_models/add_new_card_cubit/payment_methods_cubit.dart';
-import 'package:e_commerce/views/widgets/label_text_field_new_card.dart';
+import 'package:e_commerce/views/widgets/label_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,29 +30,29 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              LabelTextFieldNewCard(
+              LabelTextField(
                 label: "Card Number",
                 controller: _cardNumberController,
                 hintText: "Enter Card Number",
-                icon: Icons.credit_card,
+                prefixIcon: Icons.credit_card,
               ),
-              LabelTextFieldNewCard(
+              LabelTextField(
                 label: "Card Holder Name",
                 controller: _cardHodlerNameController,
                 hintText: "Enter Card Holder Number",
-                icon: Icons.person,
+                prefixIcon: Icons.person,
               ),
-              LabelTextFieldNewCard(
+              LabelTextField(
                 label: "Expiry Date",
                 controller: _expiryDateController,
                 hintText: "Enter Expiry Date",
-                icon: Icons.date_range,
+                prefixIcon: Icons.date_range,
               ),
-              LabelTextFieldNewCard(
+              LabelTextField(
                 label: "CVV",
                 controller: _cvvController,
                 hintText: "Enter CVV",
-                icon: Icons.password,
+                prefixIcon: Icons.password,
               ),
               const Spacer(),
               SizedBox(
@@ -85,7 +85,7 @@ class _AddNewCardPageState extends State<AddNewCardPage> {
                     }
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryColor,
+                        backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
                       ),
                       onPressed: () {

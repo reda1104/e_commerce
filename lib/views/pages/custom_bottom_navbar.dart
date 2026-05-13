@@ -26,7 +26,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
       item: ItemConfig(
         icon: Icon(Icons.home),
         title: "Home",
-        activeForegroundColor: AppColors.primaryColor,
+        activeForegroundColor: AppColors.primary,
       ),
     ),
     PersistentTabConfig(
@@ -34,7 +34,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
       item: ItemConfig(
         icon: Icon(Icons.shopping_cart),
         title: "Cart",
-        activeForegroundColor: AppColors.primaryColor,
+        activeForegroundColor: AppColors.primary,
       ),
     ),
     PersistentTabConfig(
@@ -42,7 +42,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
       item: ItemConfig(
         icon: Icon(Icons.favorite),
         title: "Favourites",
-        activeForegroundColor: AppColors.primaryColor,
+        activeForegroundColor: AppColors.primary,
       ),
     ),
     PersistentTabConfig(
@@ -50,7 +50,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
       item: ItemConfig(
         icon: Icon(Icons.person),
         title: "Profile",
-        activeForegroundColor: AppColors.primaryColor,
+        activeForegroundColor: AppColors.primary,
       ),
     ),
   ];

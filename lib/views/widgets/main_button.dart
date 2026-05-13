@@ -12,7 +12,7 @@ class MainButton extends StatelessWidget {
     super.key,
     this.height = 60,
     this.onTap,
-    this.backGroundColor = AppColors.primaryColor,
+    this.backGroundColor = AppColors.primary,
     this.foreGroundColor = Colors.white,
     required this.text,
   });

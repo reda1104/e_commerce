@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/utils/app_colors.dart';
 import 'package:e_commerce/view_models/choose_location_cubit.dart/choose_location_cubit.dart';
+import 'package:e_commerce/views/widgets/location_item.dart';
 import 'package:e_commerce/views/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -99,59 +100,39 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                         shrinkWrap: true,
                         itemCount: dummyLocations.length,
                         itemBuilder: (context, index) {
-                          final dummyLocation = dummyLocations[index];
+                          final location = dummyLocations[index];
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 16.0),
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                border: Border.all(color: AppColors.grey),
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          dummyLocation.city,
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.titleMedium,
-                                        ),
-                                        Text(
-                                          "${dummyLocation.city}, ${dummyLocation.country}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleSmall!
-                                              .copyWith(color: AppColors.grey),
-                                        ),
-                                      ],
-                                    ),
-                                    Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 43,
-                                          backgroundColor: AppColors.grey,
-                                        ),
-                                        CircleAvatar(
-                                          radius: 40,
-                                          backgroundImage:
-                                              CachedNetworkImageProvider(
-                                                dummyLocation.imgUrl,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                            child:
+                                BlocBuilder<
+                                  ChooseLocationCubit,
+                                  ChooseLocationState
+                                >(
+                                  bloc: cubit,
+                                  buildWhen: (previous, current) =>
+                                      current is LocationChosen,
+                                  builder: (context, state) {
+                                    if (state is LocationChosen) {
+                                      final chosenLocation = state.location;
+                                      return LocationItemWidget(
+                                        onTap: () {
+                                          cubit.selectLocation(location.id);
+                                        },
+                                        location: location,
+                                        borderColor:
+                                            chosenLocation.id == location.id
+                                            ? AppColors.primary
+                                            : AppColors.grey,
+                                      );
+                                    }
+                                    return LocationItemWidget(
+                                      onTap: () {
+                                        cubit.selectLocation(location.id);
+                                      },
+                                      location: location,
+                                    );
+                                  },
                                 ),
-                              ),
-                            ),
                           );
                         },
                       );
@@ -163,7 +144,33 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                   },
                 ),
                 SizedBox(height: 24),
-                MainButton(text: "Confirm", onTap: () {}),
+                BlocConsumer<ChooseLocationCubit, ChooseLocationState>(
+                  listenWhen: (previous, current) =>
+                      current is ConfirmLocationLoaded,
+                  listener: (context, state) {
+                    if (state is ConfirmLocationLoaded) {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  bloc: cubit,
+                  buildWhen: (previous, current) =>
+                      current is ConfirmLocationLoaded ||
+                      current is ConfirmLocationLoading ||
+                      current is ConfirmLocationFailure,
+                  builder: (context, state) {
+                    if (state is ConfirmLocationLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      );
+                    }
+                    return MainButton(
+                      text: "Confirm",
+                      onTap: () {
+                        cubit.confirmLocation();
+                      },
+                    );
+                  },
+                ),
               ],
             ),
           ),

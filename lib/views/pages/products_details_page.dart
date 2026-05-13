@@ -258,7 +258,7 @@ class ProductsDetailsPage extends StatelessWidget {
                                   if (state is ProductAddingToCart) {
                                     return ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppColors.primaryColor,
+                                        backgroundColor: AppColors.primary,
                                       ),
                                       onPressed: null,
                                       child:
@@ -269,7 +269,7 @@ class ProductsDetailsPage extends StatelessWidget {
                                   } else if (state is ProductAddedToCart) {
                                     return ElevatedButton.icon(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppColors.primaryColor,
+                                        backgroundColor: AppColors.primary,
                                       ),
                                       onPressed: null,
                                       label: Text(
@@ -284,7 +284,7 @@ class ProductsDetailsPage extends StatelessWidget {
                                   }
                                   return ElevatedButton.icon(
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.primaryColor,
+                                      backgroundColor: AppColors.primary,
                                     ),
                                     onPressed: () {
                                       if (cubit.selectedSize != null) {
