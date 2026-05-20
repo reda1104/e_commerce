@@ -157,11 +157,37 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                         SizedBox(height: 16),
-                        SocialMediaButton(
-                          text: "Login with Facebook",
-                          imgUrl:
-                              "https://clipartcraft.com/images/facebook-logo-circle-2.png",
-                          onTap: () {},
+                        BlocConsumer<AuthCubit, AuthState>(
+                          bloc: cubit,
+                          listenWhen: (previous, current) =>
+                              current is AuthFacebookDone ||
+                              current is AuthFacebookError,
+                          listener: (context, state) {
+                            if (state is AuthFacebookDone) {
+                              Navigator.of(context).pushNamed(AppRoutes.home);
+                            } else if (state is AuthFacebookError) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(state.message)),
+                              );
+                            }
+                          },
+                          buildWhen: (previous, current) =>
+                              current is AuthFacebookLoading ||
+                              current is AuthFacebookError ||
+                              current is AuthFacebookDone,
+                          builder: (context, state) {
+                            if (state is AuthFacebookLoading) {
+                              return SocialMediaButton(isLoading: true);
+                            }
+                            return SocialMediaButton(
+                              text: "Login with Facebook",
+                              imgUrl:
+                                  "https://clipartcraft.com/images/facebook-logo-circle-2.png",
+                              onTap: () async {
+                                await cubit.authenticateWithFacebook();
+                              },
+                            );
+                          },
                         ),
                       ],
                     ),

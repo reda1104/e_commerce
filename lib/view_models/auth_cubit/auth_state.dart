@@ -38,3 +38,14 @@ final class AuthGoogleError extends AuthState {
   final String message;
   AuthGoogleError(this.message);
 }
+
+final class AuthFacebookLoading extends AuthState {}
+
+final class AuthFacebookDone extends AuthState {
+  AuthFacebookDone();
+}
+
+final class AuthFacebookError extends AuthState {
+  final String message;
+  AuthFacebookError(this.message);
+}

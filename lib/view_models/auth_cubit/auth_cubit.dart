@@ -70,4 +70,19 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthGoogleError(e.toString()));
     }
   }
+
+  Future<void> authenticateWithFacebook() async {
+    emit(AuthFacebookLoading());
+    try {
+      await Future.delayed(const Duration(seconds: 1));
+      final result = await authServices.authenticateWithFacebook();
+      if (result) {
+        emit(AuthFacebookDone());
+      } else {
+        emit(AuthFacebookError('Invalid email or password'));
+      }
+    } catch (e) {
+      emit(AuthFacebookError(e.toString()));
+    }
+  }
 }
