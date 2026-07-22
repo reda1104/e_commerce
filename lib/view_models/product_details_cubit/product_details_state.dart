@@ -23,6 +23,11 @@ final class ProductAddedToCart extends ProductDetailsState {
 
 final class ProductAddingToCart extends ProductDetailsState {}
 
+final class ProductAddingToCartError extends ProductDetailsState {
+  final String message;
+  ProductAddingToCartError({required this.message});
+}
+
 final class QuantityDetailsLoaded extends ProductDetailsState {
   final int quantity;
   QuantityDetailsLoaded({required this.quantity});

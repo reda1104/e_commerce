@@ -1,7 +1,9 @@
 import 'package:e_commerce/models/product_item_model.dart';
 import 'package:e_commerce/utils/app_colors.dart';
+import 'package:e_commerce/view_models/home_cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductItem extends StatelessWidget {
   final ProductItemModel productItem;
@@ -9,6 +11,7 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final homeCubit = BlocProvider.of<HomeCubit>(context);
     return Column(
       children: [
         Container(
@@ -20,7 +23,7 @@ class ProductItem extends StatelessWidget {
           child: Stack(
             children: [
               CachedNetworkImage(
-                imageUrl: productItem.imageUrl,
+                imageUrl: productItem.imgUrl,
                 height: 110,
                 width: 200,
                 placeholder: (context, url) =>
@@ -38,12 +41,48 @@ class ProductItem extends StatelessWidget {
                       shape: BoxShape.circle,
                       color: Colors.white54,
                     ),
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.favorite_border,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {},
+                    child: BlocBuilder<HomeCubit, HomeState>(
+                      bloc: homeCubit,
+                      buildWhen: (previous, current) =>
+                          current is SetFavoriteLoading ||
+                          current is SetFavoriteSuccess ||
+                          current is SetFavoriteError,
+                      builder: (context, state) {
+                        if (state is SetFavoriteLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          );
+                        } else if (state is SetFavoriteSuccess) {
+                          return state.isFavorite
+                              ? IconButton(
+                                  icon: const Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () async {
+                                    await homeCubit.setFavorite(productItem);
+                                  },
+                                )
+                              : IconButton(
+                                  icon: const Icon(
+                                    Icons.favorite_border,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () async {
+                                    await homeCubit.setFavorite(productItem);
+                                  },
+                                );
+                        }
+                        return IconButton(
+                          icon: const Icon(
+                            Icons.favorite_border,
+                            color: Colors.black,
+                          ),
+                          onPressed: () async {
+                            await homeCubit.setFavorite(productItem);
+                          },
+                        );
+                      },
                     ),
                   ),
                 ),

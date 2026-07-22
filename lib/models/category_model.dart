@@ -1,5 +1,6 @@
-import 'package:e_commerce/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+
+import 'package:e_commerce/utils/app_colors.dart';
 
 class CategoryModel {
   final String id;
@@ -15,6 +16,26 @@ class CategoryModel {
     this.bgColor = AppColors.primary,
     this.textColor = AppColors.white,
   });
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'productCount': productCount,
+      'bgColor': bgColor.value,
+      'textColor': textColor.value,
+    };
+  }
+
+  factory CategoryModel.fromMap(Map<String, dynamic> map) {
+    return CategoryModel(
+      id: map['id'] as String,
+      name: map['name'] as String,
+      productCount: map['productCount'] as int,
+      bgColor: Color(map['bgColor'] as int),
+      textColor: Color(map['textColor'] as int),
+    );
+  }
 }
 
 List<CategoryModel> dummyCategories = [
@@ -22,8 +43,8 @@ List<CategoryModel> dummyCategories = [
     id: '1',
     name: 'Electronics',
     productCount: 120,
-    bgColor: AppColors.grey,
-    textColor: AppColors.black,
+    bgColor: const Color(0xFF9E9E9E),
+    textColor: const Color(0xFF000000),
   ),
   CategoryModel(
     id: '2',

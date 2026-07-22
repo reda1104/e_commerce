@@ -107,6 +107,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             await cubit.register(
                               emailController.text,
                               passwordController.text,
+                              userNameController.text,
                             );
                           }
                         },

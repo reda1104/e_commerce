@@ -56,7 +56,7 @@ class ProductsDetailsPage extends StatelessWidget {
                       SizedBox(height: 100),
                       CachedNetworkImage(
                         fit: BoxFit.contain,
-                        imageUrl: product.imageUrl,
+                        imageUrl: product.imgUrl,
                         height: size.height * 0.4,
                       ),
                     ],

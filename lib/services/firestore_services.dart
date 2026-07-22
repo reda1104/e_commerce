@@ -73,7 +73,7 @@ class FirestoreServices {
 
   Future<List<T>> getCollection<T>({
     required String path,
-    required T Function(Map<String, dynamic>? data, String documentId) builder,
+    required T Function(Map<String, dynamic> data, String documentId) builder,
     Query Function(Query query)? queryBuilder,
     int Function(T lhs, T rhs)? sort,
   }) async {

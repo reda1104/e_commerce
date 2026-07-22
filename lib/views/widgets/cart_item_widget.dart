@@ -23,7 +23,7 @@ class CartItemWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(30),
             ),
             child: CachedNetworkImage(
-              imageUrl: cartItem.product.imageUrl,
+              imageUrl: cartItem.product.imgUrl,
               height: 125,
               width: 125,
             ),

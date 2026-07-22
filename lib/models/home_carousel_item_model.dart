@@ -1,8 +1,22 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 class HomeCarouselItemModel {
   String id;
   String imgUrl;
 
   HomeCarouselItemModel({required this.id, required this.imgUrl});
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{'id': id, 'imgUrl': imgUrl};
+  }
+
+  factory HomeCarouselItemModel.fromMap(Map<String, dynamic> map) {
+    return HomeCarouselItemModel(
+      id: map['id'] as String,
+      imgUrl: map['imgUrl'] as String,
+    );
+  }
 }
 
 List<HomeCarouselItemModel> dummyHomeCarouselItems = [

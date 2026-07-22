@@ -14,5 +14,17 @@ final class HomeLoaded extends HomeState {
 
 final class HomeError extends HomeState {
   final String message;
-  HomeError({required this.message});
+  HomeError(this.message);
+}
+
+final class SetFavoriteLoading extends HomeState {}
+
+final class SetFavoriteSuccess extends HomeState {
+  final bool isFavorite;
+  SetFavoriteSuccess({required this.isFavorite});
+}
+
+final class SetFavoriteError extends HomeState {
+  final String message;
+  SetFavoriteError(this.message);
 }
