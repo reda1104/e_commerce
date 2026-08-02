@@ -108,7 +108,8 @@ class HomeTabView extends StatelessWidget {
         } else if (state is HomeError) {
           return Center(child: Text(state.message));
         } else {
-          throw Exception("Unknown state");
+          debugPrint("Unknown HomeState: ${state.runtimeType}");
+          return const SizedBox();
         }
       },
     );

@@ -44,9 +44,12 @@ class ProductItem extends StatelessWidget {
                     child: BlocBuilder<HomeCubit, HomeState>(
                       bloc: homeCubit,
                       buildWhen: (previous, current) =>
-                          current is SetFavoriteLoading ||
-                          current is SetFavoriteSuccess ||
-                          current is SetFavoriteError,
+                          (current is SetFavoriteLoading &&
+                              current.productId == productItem.id) ||
+                          (current is SetFavoriteSuccess &&
+                              current.productId == productItem.id) ||
+                          (current is SetFavoriteError &&
+                              current.productId == productItem.id),
                       builder: (context, state) {
                         if (state is SetFavoriteLoading) {
                           return const Center(
@@ -74,10 +77,12 @@ class ProductItem extends StatelessWidget {
                                 );
                         }
                         return IconButton(
-                          icon: const Icon(
-                            Icons.favorite_border,
-                            color: Colors.black,
-                          ),
+                          icon: productItem.isFavorite
+                              ? Icon(Icons.favorite, color: Colors.red)
+                              : const Icon(
+                                  Icons.favorite_border,
+                                  color: Colors.black,
+                                ),
                           onPressed: () async {
                             await homeCubit.setFavorite(productItem);
                           },

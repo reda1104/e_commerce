@@ -28,7 +28,7 @@ class ProductItemModel {
   final String description;
   final double price;
   final String imgUrl;
-  final bool isFavourite;
+  final bool isFavorite;
   final String category;
   final double averageRate;
 
@@ -39,7 +39,7 @@ class ProductItemModel {
     required this.price,
     required this.imgUrl,
     required this.category,
-    this.isFavourite = false,
+    this.isFavorite = false,
     this.averageRate = 4.5,
   });
 
@@ -61,7 +61,7 @@ class ProductItemModel {
       description: description ?? this.description,
       price: price ?? this.price,
       imgUrl: imageUrl ?? this.imgUrl,
-      isFavourite: isFavorite ?? this.isFavourite,
+      isFavorite: isFavorite ?? this.isFavorite,
       category: category ?? this.category,
       averageRate: averageRate ?? this.averageRate,
     );
@@ -74,7 +74,7 @@ class ProductItemModel {
       'description': description,
       'price': price,
       'imgUrl': imgUrl,
-      'isFavourite': isFavourite,
+      // 'isFavorite': isFavorite,
       'category': category,
       'averageRate': averageRate,
     };
@@ -87,7 +87,7 @@ class ProductItemModel {
       description: map['description'] ?? "",
       price: map['price'] ?? "",
       imgUrl: map['imgUrl'] ?? "",
-      isFavourite: map['isFavourite'] ?? "",
+      // isFavorite: map['isFavorite'] ?? "",
       category: map['category'] ?? "",
       averageRate: map['averageRate'] ?? "",
     );
@@ -96,6 +96,7 @@ class ProductItemModel {
 
 List<ProductItemModel> dummyProducts = [
   ProductItemModel(
+    averageRate: 4.5,
     id: "1",
     title: "Classic White Cotton T-Shirt",
     description:
